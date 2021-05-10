@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "Board.h"
 
 class Game
 {
@@ -26,6 +26,6 @@ private:
 	static constexpr int screenHeight = 600;
 
 	// User variables here
-
+	Board board;
 	//
 };
