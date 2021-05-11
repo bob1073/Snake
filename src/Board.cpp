@@ -8,12 +8,14 @@ Board::Board(sf::RenderTarget& target, const sf::Vector2f& position, const sf::C
     borderSize(borderSize),
     padding(padding)
 {
+    // Init border
     border.setPosition(position);
     border.setSize(sf::Vector2f(width * cellSize, height * cellSize));
     border.setFillColor(sf::Color::Transparent);
     border.setOutlineColor(borderColor);
     border.setOutlineThickness(borderSize);
 
+    // Init all cells
     for (int i = 0; i < width; ++i)
     {
         for (int j = 0; j < height; ++j)
@@ -40,6 +42,12 @@ void Board::RenderBorder()
     target.draw(border);
 }
 
+bool Board::IsInsideBoard(const sf::Vector2i cellPos) const
+{
+    return cellPos.x >= 0 && cellPos.x < width&&
+        cellPos.y >= 0 && cellPos.y < height;
+}
+
 int Board::GetWidth() const
 {
     return width;
@@ -48,11 +56,5 @@ int Board::GetWidth() const
 int Board::GetHeight() const
 {
     return height;
-}
-
-bool Board::IsInsideBoard(const sf::Vector2i cellPos) const
-{
-    return cellPos.x >= 0 && cellPos.x < width&&
-        cellPos.y >= 0 && cellPos.y < height;
 }
 

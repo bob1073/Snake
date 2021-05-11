@@ -14,9 +14,11 @@ public:
 	void Render();
 
 	bool IsRunning() const;
-	// User functions here
 
-	//
+	/*User functions here*/
+	void UpdateSnake(const float& dt);
+
+	/*********************/
 private:
 	sf::RenderWindow window;
 	sf::Event e;
@@ -26,26 +28,30 @@ private:
 	static constexpr int screenWidth = 800;
 	static constexpr int screenHeight = 600;
 
-	// User variables here
+	/* User variables here */
+	// Basic stuff
 	sf::Clock dtClock;
+	float dt;
 	std::mt19937 random;
-	sf::Font font;
-	static constexpr int fontSize = 60;
 
+	// Game entities
 	Board board;
 	Snake snake;
 	Goal goal;
 	
+	// Interface
+	sf::Font font;
 	sf::Text startText;
 	sf::Text gameOverText;
-	
-	sf::Vector2i deltaPos = { 1,0 };
+	static constexpr int fontSize = 60;
 
+	// Snake movement
+	sf::Vector2i deltaPos = { 1,0 };
 	float snakeMovePeriod = 0.3f;
 	float snakeMoveTimer = 0.0f;
-	float dt;
-
+	
+	// Game state
 	bool gameOver = false;
 	bool gameStart = false;
-	//
+	/***********************/
 };

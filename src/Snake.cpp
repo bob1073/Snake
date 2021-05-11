@@ -50,27 +50,12 @@ void Snake::Move(const sf::Vector2i& deltaPos)
     segments[0].Move(deltaPos);
 }
 
-sf::Vector2i Snake::GetNextHeadPosition(const sf::Vector2i& deltaPos)
-{
-    sf::Vector2i headPos(segments[0].GetPosition());
-    headPos += deltaPos;
-    return headPos;
-}
-
 void Snake::Grow()
 {
     if (nSegments < nSegmentsMax)
     {
         segments[nSegments].InitBody(sf::Color::Green);
         ++nSegments;
-    }
-}
-
-void Snake::Render(Board& board)
-{
-    for (int i = 0; i < nSegments; ++i)
-    {
-        segments[i].Render(board);
     }
 }
 
@@ -96,4 +81,19 @@ bool Snake::IsInTile(const sf::Vector2i& tilePos) const
         }
     }
     return false;
+}
+
+sf::Vector2i Snake::GetNextHeadPosition(const sf::Vector2i& deltaPos)
+{
+    sf::Vector2i headPos(segments[0].GetPosition());
+    headPos += deltaPos;
+    return headPos;
+}
+
+void Snake::Render(Board& board)
+{
+    for (int i = 0; i < nSegments; ++i)
+    {
+        segments[i].Render(board);
+    }
 }
