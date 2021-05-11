@@ -29,10 +29,16 @@ private:
 	// User variables here
 	sf::Clock dtClock;
 	std::mt19937 random;
+	sf::Font font;
+	static constexpr int fontSize = 60;
 
 	Board board;
 	Snake snake;
 	Goal goal;
+	
+	sf::Text startText;
+	sf::Text gameOverText;
+	
 	sf::Vector2i deltaPos = { 1,0 };
 
 	float snakeMovePeriod = 0.3f;
@@ -40,5 +46,6 @@ private:
 	float dt;
 
 	bool gameOver = false;
+	bool gameStart = false;
 	//
 };
