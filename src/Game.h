@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Board.h"
+#include "Snake.h"
 
 class Game
 {
@@ -26,6 +26,16 @@ private:
 	static constexpr int screenHeight = 600;
 
 	// User variables here
+	sf::Clock dtClock;
 	Board board;
+	Snake snake;
+
+	sf::Vector2i deltaPos = { 1,0 };
+
+	float snakeMovePeriod = 0.3f;
+	float snakeMoveTimer = 0.0f;
+	float dt;
+
+	bool gameOver = false;
 	//
 };

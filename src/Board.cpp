@@ -1,7 +1,8 @@
 #include "Board.h"
 
-Board::Board(const sf::Vector2f& position, const sf::Color& borderColor, float borderSize, float padding)
+Board::Board(sf::RenderTarget& target, const sf::Vector2f& position, const sf::Color& borderColor, float borderSize, float padding)
     :
+    target(target),
     position(position),
     borderColor(borderColor),
     borderSize(borderSize),
@@ -25,7 +26,7 @@ Board::Board(const sf::Vector2f& position, const sf::Color& borderColor, float b
     }
 }
 
-void Board::RenderCell(sf::RenderTarget& target, const sf::Vector2i& cellPos, sf::Color color)
+void Board::RenderCell(const sf::Vector2i& cellPos, sf::Color color)
 {
     const int x = cellPos.x;
     const int y = cellPos.y;
@@ -34,7 +35,7 @@ void Board::RenderCell(sf::RenderTarget& target, const sf::Vector2i& cellPos, sf
     target.draw(cells[x][y]);   
 }
 
-void Board::RenderBorder(sf::RenderTarget& target)
+void Board::RenderBorder()
 {
     target.draw(border);
 }
@@ -51,6 +52,7 @@ int Board::GetHeight() const
 
 bool Board::IsInsideBoard(const sf::Vector2i cellPos) const
 {
-    return cellPos.x <= width && cellPos.y <= height;
+    return cellPos.x >= 0 && cellPos.x < width&&
+        cellPos.y >= 0 && cellPos.y < height;
 }
 

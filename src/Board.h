@@ -5,10 +5,10 @@
 class Board
 {
 public:
-	Board(const sf::Vector2f& position, const sf::Color& borderColor, float borderSize, float padding = 2.0f);
+	Board(sf::RenderTarget& target, const sf::Vector2f& position, const sf::Color& borderColor, float borderSize, float padding = 2.0f);
 
-	void RenderCell(sf::RenderTarget& target, const sf::Vector2i& cellPos, sf::Color color);
-	void RenderBorder(sf::RenderTarget& target);
+	void RenderCell(const sf::Vector2i& cellPos, sf::Color color);
+	void RenderBorder();
 
 	int GetWitdh() const;
 	int GetHeight() const;
@@ -16,6 +16,7 @@ public:
 	bool IsInsideBoard(const sf::Vector2i cellPos) const;
 
 private:
+	sf::RenderTarget& target;
 	static constexpr int width = 35;
 	static constexpr int height = 25;
 	static constexpr int cellSize = 20;
