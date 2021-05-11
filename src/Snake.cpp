@@ -18,7 +18,7 @@ void Snake::Segment::Follow(const Segment& nextSegment)
 
 void Snake::Segment::Move(const sf::Vector2i& deltaPos)
 {
-    const float length = std::sqrt(deltaPos.x * deltaPos.x + deltaPos.y * deltaPos.y);
+    const float length = float(std::sqrt(deltaPos.x * deltaPos.x + deltaPos.y * deltaPos.y));
     if (length == 1.0f)
     {
         position += deltaPos;

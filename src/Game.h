@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Snake.h"
+#include "Goal.h"
 
 class Game
 {
@@ -27,9 +28,11 @@ private:
 
 	// User variables here
 	sf::Clock dtClock;
+	std::mt19937 random;
+
 	Board board;
 	Snake snake;
-
+	Goal goal;
 	sf::Vector2i deltaPos = { 1,0 };
 
 	float snakeMovePeriod = 0.3f;

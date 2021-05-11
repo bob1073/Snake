@@ -10,7 +10,7 @@ public:
 	void RenderCell(const sf::Vector2i& cellPos, sf::Color color);
 	void RenderBorder();
 
-	int GetWitdh() const;
+	int GetWidth() const;
 	int GetHeight() const;
 	
 	bool IsInsideBoard(const sf::Vector2i cellPos) const;

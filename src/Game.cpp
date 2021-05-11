@@ -4,8 +4,10 @@
 Game::Game()
     :
     window(sf::VideoMode(screenWidth, screenHeight), "Snake"),
+    random(std::random_device()()),
     board(window, sf::Vector2f(50.f, 50.0f), sf::Color::Blue, 5),
-    snake({2, 2})
+    snake({2, 2}),
+    goal(random, board, snake)
 {
 }
 
@@ -58,7 +60,25 @@ void Game::Update()
             }
             else
             {
+                const bool eating = nextPos == goal.GetPosition();
+
+                if (eating)
+                {
+                    snake.Grow();
+                    if (snakeMovePeriod >= 0.1f)
+                    {
+                        snakeMovePeriod -= 0.01f;
+                    }
+                    // (*)
+                }
                 snake.Move(deltaPos);
+
+                // If we respawn inside de other of (*), is possible that goal respawn left to snake and in that case goal won't be eaten!
+                if (eating)
+                {
+                    goal.Respawn(random, board, snake);
+                }
+
             }
         }
     }
@@ -70,6 +90,7 @@ void Game::Render()
     // Render things here
     board.RenderBorder();
     snake.Render(board);
+    goal.Render(board);
     //
     window.display();
 }

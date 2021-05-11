@@ -40,7 +40,7 @@ void Board::RenderBorder()
     target.draw(border);
 }
 
-int Board::GetWitdh() const
+int Board::GetWidth() const
 {
     return width;
 }
