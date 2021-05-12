@@ -3,7 +3,7 @@
 
 Game::Game()
     :
-    window(sf::VideoMode(screenWidth, screenHeight), "Snake"),
+    window(sf::VideoMode(screenWidth, screenHeight), "Snake", sf::Style::Titlebar | sf::Style::Close),
     random(std::random_device()()),
     board(window, sf::Vector2f(50.f, 50.0f), sf::Color::Blue, 5),
     snake({2, 2}),
@@ -20,6 +20,12 @@ Game::Game()
     startText.setCharacterSize(60);
     startText.setString("Press Enter to play");
     startText.setPosition(screenWidth / 5.0f, screenHeight / 5.0f);
+
+    // Score text
+    scoreText.setFont(font);
+    scoreText.setCharacterSize(30);
+    scoreText.setString("Score: " + std::to_string(score));
+    scoreText.setPosition(screenWidth / 10.0f, screenHeight / 10.0f);
 
     // Game over text
     gameOverText.setFont(font);
@@ -71,6 +77,7 @@ void Game::Render()
     {
         snake.Render(board);
         goal.Render(board);
+        window.draw(scoreText);
     }
     else
     {
@@ -134,15 +141,22 @@ void Game::UpdateSnake(const float& dt)
                     }
                     // (*)
                 }
+
                 snake.Move(deltaPos);
 
                 // If we respawn inside de other of (*), is possible that goal respawn left to snake and in that case goal won't be eaten!
                 if (eating)
                 {
                     goal.Respawn(random, board, snake);
+                    AddScore();
                 }
-
             }
         }
     }
+}
+
+void Game::AddScore()
+{
+    score++;
+    scoreText.setString("Score: " + std::to_string(score));
 }

@@ -17,6 +17,7 @@ public:
 
 	/*User functions here*/
 	void UpdateSnake(const float& dt);
+	void AddScore();
 
 	/*********************/
 private:
@@ -42,6 +43,7 @@ private:
 	// Interface
 	sf::Font font;
 	sf::Text startText;
+	sf::Text scoreText;
 	sf::Text gameOverText;
 	static constexpr int fontSize = 60;
 
@@ -50,8 +52,9 @@ private:
 	float snakeMovePeriod = 0.3f;
 	float snakeMoveTimer = 0.0f;
 	
-	// Game state
+	// Game variables
 	bool gameOver = false;
 	bool gameStart = false;
+	int score = 0;
 	/***********************/
 };
