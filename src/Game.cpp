@@ -10,7 +10,7 @@ Game::Game()
     goal(random, board, snake)
 {
     // Init font and texts
-    if (!font.loadFromFile("Resources/ARCADE.ttf"))
+    if (!font.loadFromFile("Resources/Fonts/ARCADE.ttf"))
     {
         std::cout << "Error al cargar la fuente, no se pudo abrir el archivo ARCADE.ttf" << std::endl;
     }
@@ -127,6 +127,7 @@ void Game::UpdateSnake(const float& dt)
             if (!board.IsInsideBoard(nextPos) || snake.IsInTileExceptEnd(nextPos))
             {
                 gameOver = true;
+                PlaySound(deathSound, "Resources/Audio/death.wav");
             }
             else
             {
@@ -149,6 +150,7 @@ void Game::UpdateSnake(const float& dt)
                 {
                     goal.Respawn(random, board, snake);
                     AddScore();
+                    PlaySound(growSound, "Resources/Audio/grow.wav");
                 }
             }
         }
@@ -159,4 +161,17 @@ void Game::AddScore()
 {
     score++;
     scoreText.setString("Score: " + std::to_string(score));
+}
+
+void Game::PlaySound(sf::Sound& sound, std::string fileName)
+{
+    if (!soundBuffer.loadFromFile(fileName))
+    {
+        std::cout << "Error al cargar archivo " << fileName << std::endl;
+    }
+    else
+    {
+        sound.setBuffer(soundBuffer);
+        sound.play();
+    }
 }

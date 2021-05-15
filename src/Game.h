@@ -18,6 +18,8 @@ public:
 	/*User functions here*/
 	void UpdateSnake(const float& dt);
 	void AddScore();
+	
+	void PlaySound(sf::Sound& sound, std::string fileName);
 
 	/*********************/
 private:
@@ -56,5 +58,10 @@ private:
 	bool gameOver = false;
 	bool gameStart = false;
 	int score = 0;
+
+	// Audio
+	sf::SoundBuffer soundBuffer;
+	sf::Sound deathSound;
+	sf::Sound growSound;
 	/***********************/
 };
