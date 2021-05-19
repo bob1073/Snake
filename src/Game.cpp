@@ -99,19 +99,19 @@ void Game::UpdateSnake(const float& dt)
     if (!gameOver)
     {
         // Input to control the snake
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && deltaPos != sf::Vector2i(0,1))
         {
             deltaPos = { 0,-1 };
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && deltaPos != sf::Vector2i(0, -1))
         {
             deltaPos = { 0,1 };
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && deltaPos != sf::Vector2i(1, 0))
         {
             deltaPos = { -1,0 };
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && deltaPos != sf::Vector2i(-1, 0))
         {
             deltaPos = { 1,0 };
         }
