@@ -4,6 +4,7 @@ Board::Board(sf::RenderTarget& target, const sf::Vector2f& position, const sf::C
     :
     target(target),
     position(position),
+    cells(width*height),
     borderColor(borderColor),
     borderSize(borderSize),
     padding(padding)
@@ -20,10 +21,10 @@ Board::Board(sf::RenderTarget& target, const sf::Vector2f& position, const sf::C
     {
         for (int j = 0; j < height; ++j)
         {
-            cells[i][j].setPosition(position.x + i * cellSize, position.y + j * cellSize);
-            cells[i][j].setSize(sf::Vector2f(cellSize, cellSize));
-            cells[i][j].setOutlineThickness(-padding);
-            cells[i][j].setOutlineColor(sf::Color::Black);
+            cells[j * width + i].setPosition(position.x + i * cellSize, position.y + j * cellSize);
+            cells[j * width + i].setSize(sf::Vector2f(cellSize, cellSize));
+            cells[j * width + i].setOutlineThickness(-padding);
+            cells[j * width + i].setOutlineColor(sf::Color::Black);
         }
     }
 }
@@ -33,8 +34,8 @@ void Board::RenderCell(const sf::Vector2i& cellPos, sf::Color color)
     const int x = cellPos.x;
     const int y = cellPos.y;
 
-    cells[x][y].setFillColor(color);
-    target.draw(cells[x][y]);   
+    cells[y * width + x].setFillColor(color);
+    target.draw(cells[y * width + x]);
 }
 
 void Board::RenderBorder()

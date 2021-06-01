@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <vector>
 
 class Board
 {
@@ -31,7 +32,7 @@ private:
 	static constexpr int cellSize = 20;
 	
 	// Cells
-	sf::RectangleShape cells[width][height];
+	std::vector<sf::RectangleShape> cells;
 
 	// Border
 	sf::RectangleShape border;

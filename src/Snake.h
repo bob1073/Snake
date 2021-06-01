@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Board.h"
 
 class Snake
@@ -8,9 +10,9 @@ private:
 	class Segment
 	{
 	public:
-		// Init
-		void InitHead(const sf::Vector2i& cellPos);
-		void InitBody(const sf::Color& color);
+		// Constructors
+		Segment(const sf::Vector2i& cellPos);
+		Segment(const sf::Color& color);
 
 		// Functions
 		void Follow(const Segment& nextSegment);
@@ -42,9 +44,6 @@ public:
 	void Render(Board& board);
 
 private:
-	static constexpr int nSegmentsMax = 100;
-	
-	Segment segments[nSegmentsMax];
-	int nSegments = 1;
+	std::vector<Segment> segments;
 };
 

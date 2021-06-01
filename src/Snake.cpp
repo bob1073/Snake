@@ -1,12 +1,11 @@
 #include "Snake.h"
 
-void Snake::Segment::InitHead(const sf::Vector2i& cellPos)
+Snake::Segment::Segment(const sf::Vector2i& cellPos)
 {
     position = cellPos;
     color = sf::Color::Yellow;
 }
-
-void Snake::Segment::InitBody(const sf::Color& color)
+Snake::Segment::Segment(const sf::Color& color)
 {
     this->color = color;
 }
@@ -37,31 +36,27 @@ const sf::Vector2i& Snake::Segment::GetPosition() const
 
 Snake::Snake(const sf::Vector2i& position)
 {
-    segments[0].InitHead(position);
+    segments.emplace_back(position);
 }
 
 void Snake::Move(const sf::Vector2i& deltaPos)
 {
-    for (int i = nSegments - 1; i > 0; --i)
+    for (int i = segments.size() - 1; i > 0; --i)
     {
         segments[i].Follow(segments[i - 1]);
     }
 
-    segments[0].Move(deltaPos);
+    segments.front().Move(deltaPos);
 }
 
 void Snake::Grow()
 {
-    if (nSegments < nSegmentsMax)
-    {
-        segments[nSegments].InitBody(sf::Color::Green);
-        ++nSegments;
-    }
+    segments.emplace_back(sf::Color::Green);
 }
 
 bool Snake::IsInTileExceptEnd(const sf::Vector2i tilePos) const
 {
-    for (int i = 0; i < nSegments - 1; i++)
+    for (int i = 0; i < segments.size() - 1; i++)
     {
         if (segments[i].GetPosition() == tilePos)
         {
@@ -73,9 +68,9 @@ bool Snake::IsInTileExceptEnd(const sf::Vector2i tilePos) const
 
 bool Snake::IsInTile(const sf::Vector2i& tilePos) const
 {
-    for (int i = 0; i < nSegments; i++)
+    for (const auto& segment : segments)
     {
-        if (segments[i].GetPosition() == tilePos)
+        if (segment.GetPosition() == tilePos)
         {
             return true;
         }
@@ -85,15 +80,15 @@ bool Snake::IsInTile(const sf::Vector2i& tilePos) const
 
 sf::Vector2i Snake::GetNextHeadPosition(const sf::Vector2i& deltaPos)
 {
-    sf::Vector2i headPos(segments[0].GetPosition());
+    sf::Vector2i headPos(segments.front().GetPosition());
     headPos += deltaPos;
     return headPos;
 }
 
 void Snake::Render(Board& board)
 {
-    for (int i = 0; i < nSegments; ++i)
+    for (auto segment : segments)
     {
-        segments[i].Render(board);
+        segment.Render(board);
     }
 }
