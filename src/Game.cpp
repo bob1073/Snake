@@ -12,7 +12,7 @@ Game::Game()
     // Init font and texts
     if (!font.loadFromFile("Resources/Fonts/ARCADE.ttf"))
     {
-        std::cout << "Error al cargar la fuente, no se pudo abrir el archivo ARCADE.ttf" << std::endl;
+        sf::err() << "Error al cargar la fuente, no se pudo abrir el archivo ARCADE.ttf\n";
     }
 
     // Starting text
@@ -32,10 +32,6 @@ Game::Game()
     gameOverText.setCharacterSize(60);
     gameOverText.setString("Game Over");
     gameOverText.setPosition(screenWidth / 2.0f, screenHeight / 2.0f);
-}
-
-Game::~Game()
-{
 }
 
 void Game::UpdateEvents()
@@ -167,7 +163,7 @@ void Game::PlaySound(sf::Sound& sound, std::string fileName)
 {
     if (!soundBuffer.loadFromFile(fileName))
     {
-        std::cout << "Error al cargar archivo " << fileName << std::endl;
+        sf::err() << "Error al cargar archivo " << fileName << "\n";
     }
     else
     {

@@ -7,7 +7,6 @@ class Game
 {
 public:
 	Game();
-	~Game();
 
 	void UpdateEvents();
 	void Update();
