@@ -5,9 +5,9 @@ Snake::Segment::Segment(const sf::Vector2i& cellPos)
     m_position = cellPos;
     m_color = sf::Color::Yellow;
 }
-Snake::Segment::Segment(const sf::Color& color)
+Snake::Segment::Segment(const sf::Color& color1, const sf::Color& color2, std::size_t numSegments)
 {
-    m_color = color;
+    m_color = (numSegments % 2 == 0) ? m_color = color1 : m_color = color2;
 }
 
 void Snake::Segment::Follow(const Segment& nextSegment)
@@ -48,7 +48,7 @@ void Snake::Move(const sf::Vector2i& deltaPos)
 
 void Snake::Grow()
 {
-    m_segments.emplace_back(sf::Color::Green);
+    m_segments.emplace_back(m_bodyColor1, m_bodyColor2, m_segments.size());
 }
 
 bool Snake::IsInTileExceptEnd(const sf::Vector2i tilePos) const

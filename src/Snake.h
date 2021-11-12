@@ -11,8 +11,8 @@ private:
 	{
 	public:
 		// Constructors
-		Segment(const sf::Vector2i& cellPos);
-		Segment(const sf::Color& color);
+		Segment(const sf::Vector2i& cellPos); // Head
+		Segment(const sf::Color& color1, const sf::Color& color2, std::size_t numSegments); // Body
 
 		// Functions
 		void Follow(const Segment& nextSegment);
@@ -45,5 +45,8 @@ public:
 
 private:
 	std::vector<Segment> m_segments;
+	sf::Color m_headColor{ sf::Color::Yellow };
+	sf::Color m_bodyColor1{ sf::Color::Green };
+	sf::Color m_bodyColor2{ sf::Color{ 163, 73, 164 } }; // Purple
 };
 
