@@ -8,7 +8,10 @@ class Board
 {
 public:
 	// Constructor
-	Board(sf::RenderTarget& target, const sf::Vector2f& position, const sf::Color& borderColor, float borderSize, float padding = 2.0f);
+	Board(
+		sf::RenderTarget& target, const sf::Vector2f& position, 
+		const sf::Color& borderColor, float borderSize, float padding = 2.0f
+	);
 
 	// Render
 	void RenderCell(const sf::Vector2i& cellPos, sf::Color color);
@@ -16,28 +19,28 @@ public:
 
 	// Functions
 	bool IsInsideBoard(const sf::Vector2i cellPos) const;
-
+																		       
 	// Getters
-	int GetWidth() const;
-	int GetHeight() const;
+	const int GetWidth() const { return s_width; }
+	const int GetHeight() const { return s_height; }
 
 private:
 	// Graphics
-	sf::RenderTarget& target;
+	sf::RenderTarget& m_target;
 
 	// Position and size
-	sf::Vector2f position;
-	static constexpr int width = 35;
-	static constexpr int height = 25;
-	static constexpr int cellSize = 20;
+	sf::Vector2f m_position;
+	static constexpr int s_width = 35;
+	static constexpr int s_height = 25;
+	static constexpr int s_cellSize = 20;
 	
 	// Cells
-	std::vector<sf::RectangleShape> cells;
+	std::vector<sf::RectangleShape> m_cells;
 
 	// Border
-	sf::RectangleShape border;
-	sf::Color borderColor;
-	float borderSize;
-	float padding;
+	sf::RectangleShape m_border;
+	sf::Color m_borderColor;
+	float m_borderSize;
+	float m_padding;
 };
 

@@ -2,63 +2,60 @@
 
 Snake::Segment::Segment(const sf::Vector2i& cellPos)
 {
-    position = cellPos;
-    color = sf::Color::Yellow;
+    m_position = cellPos;
+    m_color = sf::Color::Yellow;
 }
 Snake::Segment::Segment(const sf::Color& color)
 {
-    this->color = color;
+    m_color = color;
 }
 
 void Snake::Segment::Follow(const Segment& nextSegment)
 {
-    position = nextSegment.position;
+    m_position = nextSegment.m_position;
 }
 
 void Snake::Segment::Move(const sf::Vector2i& deltaPos)
 {
-    const float length = float(std::sqrt(deltaPos.x * deltaPos.x + deltaPos.y * deltaPos.y));
+    const float length = static_cast<float>(
+        std::sqrt(deltaPos.x * deltaPos.x + deltaPos.y * deltaPos.y)
+    );
     if (length == 1.0f)
     {
-        position += deltaPos;
+        m_position += deltaPos;
     }
 }
 
 void Snake::Segment::Render(Board& board)
 {
-    board.RenderCell(position, color);
-}
-
-const sf::Vector2i& Snake::Segment::GetPosition() const
-{
-    return position;
+    board.RenderCell(m_position, m_color);
 }
 
 Snake::Snake(const sf::Vector2i& position)
 {
-    segments.emplace_back(position);
+    m_segments.emplace_back(position);
 }
 
 void Snake::Move(const sf::Vector2i& deltaPos)
 {
-    for (int i = segments.size() - 1; i > 0; --i)
+    for (std::size_t i = m_segments.size() - 1; i > 0; --i)
     {
-        segments[i].Follow(segments[i - 1]);
+        m_segments[i].Follow(m_segments[i - 1]);
     }
 
-    segments.front().Move(deltaPos);
+    m_segments.front().Move(deltaPos);
 }
 
 void Snake::Grow()
 {
-    segments.emplace_back(sf::Color::Green);
+    m_segments.emplace_back(sf::Color::Green);
 }
 
 bool Snake::IsInTileExceptEnd(const sf::Vector2i tilePos) const
 {
-    for (int i = 0; i < segments.size() - 1; i++)
+    for (int i = 0; i < m_segments.size() - 1; i++)
     {
-        if (segments[i].GetPosition() == tilePos)
+        if (m_segments[i].GetPosition() == tilePos)
         {
             return true;
         }
@@ -68,7 +65,7 @@ bool Snake::IsInTileExceptEnd(const sf::Vector2i tilePos) const
 
 bool Snake::IsInTile(const sf::Vector2i& tilePos) const
 {
-    for (const auto& segment : segments)
+    for (const auto& segment : m_segments)
     {
         if (segment.GetPosition() == tilePos)
         {
@@ -80,14 +77,14 @@ bool Snake::IsInTile(const sf::Vector2i& tilePos) const
 
 sf::Vector2i Snake::GetNextHeadPosition(const sf::Vector2i& deltaPos)
 {
-    sf::Vector2i headPos(segments.front().GetPosition());
+    sf::Vector2i headPos(m_segments.front().GetPosition());
     headPos += deltaPos;
     return headPos;
 }
 
 void Snake::Render(Board& board)
 {
-    for (auto segment : segments)
+    for (auto segment : m_segments)
     {
         segment.Render(board);
     }

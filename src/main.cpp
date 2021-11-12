@@ -2,7 +2,7 @@
 
 int main()
 {
-    Game game;
+    Game game{};
 
     while (game.IsRunning())
     {

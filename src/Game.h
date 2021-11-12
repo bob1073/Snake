@@ -12,55 +12,55 @@ public:
 	void Update();
 	void Render();
 
-	bool IsRunning() const;
+	const bool IsRunning() const { return m_running; }
 
 	/*User functions here*/
-	void UpdateSnake(const float& dt);
+	void UpdateSnake(float dt);
 	void AddScore();
 	
-	void PlaySound(sf::Sound& sound, std::string fileName);
+	void PlaySound(sf::Sound& sound, const std::string& fileName);
 
 	/*********************/
 private:
-	sf::RenderWindow window;
-	sf::Event e;
+	sf::RenderWindow m_window;
+	sf::Event m_event;
 
-	bool running = true;
+	bool m_running = true;
 
-	static constexpr int screenWidth = 800;
-	static constexpr int screenHeight = 600;
+	static constexpr int s_screenWidth = 800;
+	static constexpr int s_screenHeight = 600;
 
 	/* User variables here */
 	// Basic stuff
-	sf::Clock dtClock;
-	float dt;
-	std::mt19937 random;
+	sf::Clock m_dtClock;
+	float m_dt;
+	std::mt19937 m_random;
 
 	// Game entities
-	Board board;
-	Snake snake;
-	Goal goal;
+	Board m_board;
+	Snake m_snake;
+	Goal m_goal;
 	
 	// Interface
-	sf::Font font;
-	sf::Text startText;
-	sf::Text scoreText;
-	sf::Text gameOverText;
-	static constexpr int fontSize = 60;
+	sf::Font m_font;
+	sf::Text m_startText;
+	sf::Text m_scoreText;
+	sf::Text m_gameOverText;
+	static constexpr int s_fontSize = 60;
 
 	// Snake movement
-	sf::Vector2i deltaPos = { 1,0 };
-	float snakeMovePeriod = 0.3f;
-	float snakeMoveTimer = 0.0f;
+	sf::Vector2i m_deltaPos = { 1,0 };
+	float m_snakeMovePeriod = 0.3f;
+	float m_snakeMoveTimer = 0.0f;
 	
 	// Game variables
-	bool gameOver = false;
-	bool gameStart = false;
-	int score = 0;
+	bool m_gameOver = false;
+	bool m_gameStart = false;
+	int m_score = 0;
 
 	// Audio
-	sf::SoundBuffer soundBuffer;
-	sf::Sound deathSound;
-	sf::Sound growSound;
+	sf::SoundBuffer m_soundBuffer;
+	sf::Sound m_deathSound;
+	sf::Sound m_growSound;
 	/***********************/
 };

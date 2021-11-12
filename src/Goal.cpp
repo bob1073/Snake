@@ -19,15 +19,10 @@ void Goal::Respawn(std::mt19937& random, const Board& board, const Snake& snake)
 
     } while (snake.IsInTile(newPos));
 
-    position = newPos;
+    m_position = newPos;
 }
 
 void Goal::Render(Board& board)
 {
-    board.RenderCell(position, color);
-}
-
-const sf::Vector2i Goal::GetPosition() const
-{
-    return position;
+    board.RenderCell(m_position, m_color);
 }

@@ -22,11 +22,11 @@ private:
 		void Render(Board& board);
 
 		// Getters
-		const sf::Vector2i& GetPosition() const;
+		const sf::Vector2i& GetPosition() const { return m_position; };
 
 	private:
-		sf::Vector2i position;
-		sf::Color color;
+		sf::Vector2i m_position;
+		sf::Color m_color;
 	};
 
 public:
@@ -44,6 +44,6 @@ public:
 	void Render(Board& board);
 
 private:
-	std::vector<Segment> segments;
+	std::vector<Segment> m_segments;
 };
 

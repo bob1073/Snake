@@ -3,150 +3,156 @@
 
 Game::Game()
     :
-    window(sf::VideoMode(screenWidth, screenHeight), "Snake", sf::Style::Titlebar | sf::Style::Close),
-    random(std::random_device()()),
-    board(window, sf::Vector2f(50.f, 50.0f), sf::Color::Blue, 5),
-    snake({2, 2}),
-    goal(random, board, snake)
+    m_window{ 
+        sf::VideoMode(s_screenWidth, s_screenHeight), 
+        "Snake", sf::Style::Titlebar | sf::Style::Close
+    },
+    m_event{},
+    m_dt{},
+    m_random{ std::random_device()() },
+    m_board{ m_window, sf::Vector2f(50.f, 50.0f), sf::Color::Blue, 5 },
+    m_snake{ {2, 2} },
+    m_goal{ m_random, m_board, m_snake }
 {
     // Init font and texts
-    if (!font.loadFromFile("Resources/Fonts/ARCADE.ttf"))
+    if (!m_font.loadFromFile("Resources/Fonts/ARCADE.ttf"))
     {
-        sf::err() << "Error al cargar la fuente, no se pudo abrir el archivo ARCADE.ttf\n";
+        sf::err() << "Error al cargar la fuente, \n";
+        sf::err() << "no se pudo abrir el archivo ARCADE.ttf\n";
     }
 
     // Starting text
-    startText.setFont(font);
-    startText.setCharacterSize(60);
-    startText.setString("Press Enter to play");
-    startText.setPosition(screenWidth / 5.0f, screenHeight / 5.0f);
+    m_startText.setFont(m_font);
+    m_startText.setCharacterSize(60);
+    m_startText.setString("Press Enter to play");
+    m_startText.setPosition(s_screenWidth / 5.0f, s_screenHeight / 5.0f);
 
     // Score text
-    scoreText.setFont(font);
-    scoreText.setCharacterSize(30);
-    scoreText.setString("Score: " + std::to_string(score));
-    scoreText.setPosition(screenWidth / 10.0f, screenHeight / 10.0f);
+    m_scoreText.setFont(m_font);
+    m_scoreText.setCharacterSize(30);
+    m_scoreText.setString("Score: " + std::to_string(m_score));
+    m_scoreText.setPosition(s_screenWidth / 10.0f, s_screenHeight / 10.0f);
 
     // Game over text
-    gameOverText.setFont(font);
-    gameOverText.setCharacterSize(60);
-    gameOverText.setString("Game Over");
-    gameOverText.setPosition(screenWidth / 2.0f, screenHeight / 2.0f);
+    m_gameOverText.setFont(m_font);
+    m_gameOverText.setCharacterSize(60);
+    m_gameOverText.setString("Game Over");
+    m_gameOverText.setPosition(s_screenWidth / 2.0f, s_screenHeight / 2.0f);
 }
 
 void Game::UpdateEvents()
 {
-    while (window.pollEvent(e))
+    while (m_window.pollEvent(m_event))
     {
-        if (e.type == sf::Event::Closed)
-            running = false;
+        if (m_event.type == sf::Event::Closed)
+            m_running = false;
     }
 }
 
 void Game::Update()
 {
-    dt = dtClock.restart().asSeconds();
+    m_dt = m_dtClock.restart().asSeconds();
 
-    if (!gameStart)
+    if (!m_gameStart)
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
-            gameStart = true;
+            m_gameStart = true;
         }
     }
     else
     {
         // Game starts here
-        UpdateSnake(dt);
+        UpdateSnake(m_dt);
     }
 }
 
 void Game::Render()
 {
-    window.clear();
+    m_window.clear();
     /*Render things here*/
-    if (gameOver)
+    if (m_gameOver)
     {
-        window.draw(gameOverText);
+        m_window.draw(m_gameOverText);
     }
-    if (gameStart)
+    if (m_gameStart)
     {
-        snake.Render(board);
-        goal.Render(board);
-        window.draw(scoreText);
+        m_snake.Render(m_board);
+        m_goal.Render(m_board);
+        m_window.draw(m_scoreText);
     }
     else
     {
-        window.draw(startText);
+        m_window.draw(m_startText);
     }
-    board.RenderBorder();
+    m_board.RenderBorder();
     
     /********************/
-    window.display();
+    m_window.display();
 }
 
-bool Game::IsRunning() const
+void Game::UpdateSnake(float dt)
 {
-    return running;
-}
-
-void Game::UpdateSnake(const float& dt)
-{
-    if (!gameOver)
+    if (!m_gameOver)
     {
         // Input to control the snake
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && deltaPos != sf::Vector2i(0,1))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && 
+            m_deltaPos != sf::Vector2i(0,1))
         {
-            deltaPos = { 0,-1 };
+            m_deltaPos = { 0,-1 };
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && deltaPos != sf::Vector2i(0, -1))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && 
+            m_deltaPos != sf::Vector2i(0, -1))
         {
-            deltaPos = { 0,1 };
+            m_deltaPos = { 0,1 };
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && deltaPos != sf::Vector2i(1, 0))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && 
+            m_deltaPos != sf::Vector2i(1, 0))
         {
-            deltaPos = { -1,0 };
+            m_deltaPos = { -1,0 };
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && deltaPos != sf::Vector2i(-1, 0))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && 
+            m_deltaPos != sf::Vector2i(-1, 0))
         {
-            deltaPos = { 1,0 };
+            m_deltaPos = { 1,0 };
         }
 
 
         // Manage discrete movement
-        snakeMoveTimer += dt;
-        if (snakeMoveTimer >= snakeMovePeriod)
+        m_snakeMoveTimer += dt;
+        if (m_snakeMoveTimer >= m_snakeMovePeriod)
         {
-            snakeMoveTimer = 0.0f;
+            m_snakeMoveTimer = 0.0f;
 
-            const sf::Vector2i nextPos = snake.GetNextHeadPosition(deltaPos);
-            if (!board.IsInsideBoard(nextPos) || snake.IsInTileExceptEnd(nextPos))
+            const sf::Vector2i nextPos = m_snake.GetNextHeadPosition(m_deltaPos);
+            if (!m_board.IsInsideBoard(nextPos) || m_snake.IsInTileExceptEnd(nextPos))
             {
-                gameOver = true;
-                PlaySound(deathSound, "Resources/Audio/death.wav");
+                m_gameOver = true;
+                PlaySound(m_deathSound, "Resources/Audio/death.wav");
             }
             else
             {
-                const bool eating = nextPos == goal.GetPosition();
+                const bool eating = nextPos == m_goal.GetPosition();
 
                 if (eating)
                 {
-                    snake.Grow();
-                    if (snakeMovePeriod >= 0.1f)
+                    m_snake.Grow();
+                    if (m_snakeMovePeriod >= 0.1f)
                     {
-                        snakeMovePeriod -= 0.01f;
+                        m_snakeMovePeriod -= 0.01f;
                     }
                     // (*)
                 }
 
-                snake.Move(deltaPos);
+                m_snake.Move(m_deltaPos);
 
-                // If we respawn inside de other of (*), is possible that goal respawn left to snake and in that case goal won't be eaten!
+                // If we respawn inside de other of (*), is possible that goal 
+                // respawn left to snake and in that case goal won't be eaten!
                 if (eating)
                 {
-                    goal.Respawn(random, board, snake);
+                    m_goal.Respawn(m_random, m_board, m_snake);
                     AddScore();
-                    PlaySound(growSound, "Resources/Audio/grow.wav");
+                    PlaySound(m_growSound, "Resources/Audio/grow.wav");
                 }
             }
         }
@@ -155,19 +161,19 @@ void Game::UpdateSnake(const float& dt)
 
 void Game::AddScore()
 {
-    score++;
-    scoreText.setString("Score: " + std::to_string(score));
+    m_score++;
+    m_scoreText.setString("Score: " + std::to_string(m_score));
 }
 
-void Game::PlaySound(sf::Sound& sound, std::string fileName)
+void Game::PlaySound(sf::Sound& sound, const std::string& fileName)
 {
-    if (!soundBuffer.loadFromFile(fileName))
+    if (!m_soundBuffer.loadFromFile(fileName))
     {
         sf::err() << "Error al cargar archivo " << fileName << "\n";
     }
     else
     {
-        sound.setBuffer(soundBuffer);
+        sound.setBuffer(m_soundBuffer);
         sound.play();
     }
 }
